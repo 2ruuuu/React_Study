@@ -11,13 +11,19 @@
 }
 
 .gnbContainer {
-  background-color: #FFFFFF;
-  border-bottom: 1px solid #E2E2E2;
+  background-color: #ffffff;
+  border-bottom: 1px solid #e2e2e2;
 }
 
 .gnb {
   display: flex;
+  justify-content: space-between;
   padding: 18px 0;
+}
+
+.select {
+  border-radius: 5px;
+  height: 20px;
 }
 
 .main {

@@ -1,15 +1,16 @@
-import { useState } from 'react';
-import ReviewList from './components/ReviewList';
-import Modal from './components/Modal';
-import ReviewForm from './components/ReviewForm';
-import Button from './components/Button';
-import Layout from './components/Layout';
-import mockItems from './mock.json';
-import styles from './App.module.css';
+import {useState} from "react";
+import ReviewList from "./components/ReviewList";
+import Modal from "./components/Modal";
+import ReviewForm from "./components/ReviewForm";
+import Button from "./components/Button";
+import Layout from "./components/Layout";
+import mockItems from "./mock.json";
+import styles from "./App.module.css";
+import LocaleContext from "./contexts/LocaleContext";
 
 function App() {
   const [items, setItems] = useState(mockItems);
-  const [order, setOrder] = useState('createdAt');
+  const [order, setOrder] = useState("createdAt");
   const [isCreateReviewOpen, setIsCreateReviewOpen] = useState(false);
   const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
@@ -47,39 +48,46 @@ function App() {
   };
 
   return (
-    <Layout>
-      <div className={styles.buttons}>
-        <div>
+    <LocaleContext.Provider value="ko">
+      <Layout>
+        <div className={styles.buttons}>
+          <div>
+            <Button
+              className={styles.orderButton}
+              variant={order === "createdAt" ? "primary" : "ghost"}
+              onClick={() => setOrder("createdAt")}
+            >
+              최신순
+            </Button>
+            <Button
+              className={styles.orderButton}
+              variant={order === "rating" ? "primary" : "ghost"}
+              onClick={() => setOrder("rating")}
+            >
+              베스트순
+            </Button>
+          </div>
           <Button
-            className={styles.orderButton}
-            variant={order === 'createdAt' ? 'primary' : 'ghost'}
-            onClick={() => setOrder('createdAt')}
+            className={styles.createButton}
+            onClick={() => setIsCreateReviewOpen(true)}
           >
-            최신순
+            추가하기
           </Button>
-          <Button
-            className={styles.orderButton}
-            variant={order === 'rating' ? 'primary' : 'ghost'}
-            onClick={() => setOrder('rating')}
+          <Modal
+            isOpen={isCreateReviewOpen}
+            onClose={() => setIsCreateReviewOpen(false)}
           >
-            베스트순
-          </Button>
+            <h2 className={styles.modalTitle}>리뷰 생성</h2>
+            <ReviewForm onSubmit={handleCreate} />
+          </Modal>
         </div>
-        <Button className={styles.createButton} onClick={() => setIsCreateReviewOpen(true)}>추가하기</Button>
-        <Modal
-          isOpen={isCreateReviewOpen}
-          onClose={() => setIsCreateReviewOpen(false)}
-        >
-          <h2 className={styles.modalTitle}>리뷰 생성</h2>
-          <ReviewForm onSubmit={handleCreate} />
-        </Modal>
-      </div>
-      <ReviewList
-        items={sortedItems}
-        onUpdate={handleUpdate}
-        onDelete={handleDelete}
-      />
-    </Layout>
+        <ReviewList
+          items={sortedItems}
+          onUpdate={handleUpdate}
+          onDelete={handleDelete}
+        />
+      </Layout>
+    </LocaleContext.Provider>
   );
 }
 

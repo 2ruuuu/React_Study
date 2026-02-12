@@ -1,15 +1,17 @@
-import { useState } from 'react';
-import Modal from './Modal';
-import ReviewForm from './ReviewForm';
-import Button from './Button';
-import placeholderImage from '../assets/placeholder.png';
-import formatDate from '../utils/formatDate';
-import styles from './ReviewListItem.module.css';
+import {useContext, useState} from "react";
+import Modal from "./Modal";
+import ReviewForm from "./ReviewForm";
+import Button from "./Button";
+import placeholderImage from "../assets/placeholder.png";
+import formatDate from "../utils/formatDate";
+import styles from "./ReviewListItem.module.css";
+import LocaleContext from "../contexts/LocaleContext";
 
-const STARS = '★★★★★';
+const STARS = "★★★★★";
 
-function ReviewListItem({ item, onUpdate, onDelete }) {
+function ReviewListItem({item, onUpdate, onDelete}) {
   const [isEditModalOpen, setIsEditModalOpen] = useState();
+  const locale = useContext(LocaleContext);
 
   const handleEditFormSubmit = (data) => {
     onUpdate(item.id, data);
@@ -50,6 +52,7 @@ function ReviewListItem({ item, onUpdate, onDelete }) {
           >
             삭제
           </Button>
+          <p>현재 언어: {locale}</p>
         </div>
       </div>
     </div>
