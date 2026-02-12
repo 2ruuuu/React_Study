@@ -1,15 +1,16 @@
-import FoodListItem from "./FoodListItem";
+import FoodListItem from './FoodListItem';
+import styles from './FoodList.module.css';
 
-const FoodList = ({items, onDelete, onUpdate}) => {
+function FoodList({ items, onUpdate, onDelete }) {
   return (
-    <ul>
+    <ul className={styles.foodList}>
       {items.map((item) => (
         <li key={item.id}>
-          <FoodListItem item={item} onDelete={onDelete} onUpdate={onUpdate} />
+          <FoodListItem item={item} onUpdate={onUpdate} onDelete={onDelete} />
         </li>
       ))}
     </ul>
   );
-};
+}
 
 export default FoodList;

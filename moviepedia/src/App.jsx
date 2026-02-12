@@ -1,13 +1,15 @@
-import {useState} from "react";
-import mockItems from "./mock.json";
-import ReviewList from "./components/ReviewList";
-import Modal from "./components/Modal";
-import ReviewForm from "./components/ReviewForm";
-import Button from "./components/Button";
+import { useState } from 'react';
+import ReviewList from './components/ReviewList';
+import Modal from './components/Modal';
+import ReviewForm from './components/ReviewForm';
+import Button from './components/Button';
+import Layout from './components/Layout';
+import mockItems from './mock.json';
+import styles from './App.module.css';
 
 function App() {
   const [items, setItems] = useState(mockItems);
-  const [order, setOrder] = useState("createdAt");
+  const [order, setOrder] = useState('createdAt');
   const [isCreateReviewOpen, setIsCreateReviewOpen] = useState(false);
   const sortedItems = items.sort((a, b) => b[order] - a[order]);
 
@@ -20,13 +22,7 @@ function App() {
       updatedAt: now.valueOf(),
     };
     setItems([newItem, ...items]);
-    handleModalClose();
-  };
-  const handleRecentClick = () => {
-    setOrder("createdAt");
-  };
-  const handleBestClick = () => {
-    setOrder("rating");
+    setIsCreateReviewOpen(false);
   };
 
   const handleUpdate = (id, data) => {
@@ -42,7 +38,6 @@ function App() {
       newItem,
       ...items.slice(index + 1),
     ];
-
     setItems(newItems);
   };
 
@@ -51,37 +46,40 @@ function App() {
     setItems(nextItems);
   };
 
-  const handleModalClose = () => {
-    setIsCreateReviewOpen(false);
-  };
-
   return (
-    <div>
-      <div>
-        <Button
-          variant={order === "createdAt" ? "primary" : "ghost"}
-          onClick={handleRecentClick}
+    <Layout>
+      <div className={styles.buttons}>
+        <div>
+          <Button
+            className={styles.orderButton}
+            variant={order === 'createdAt' ? 'primary' : 'ghost'}
+            onClick={() => setOrder('createdAt')}
+          >
+            최신순
+          </Button>
+          <Button
+            className={styles.orderButton}
+            variant={order === 'rating' ? 'primary' : 'ghost'}
+            onClick={() => setOrder('rating')}
+          >
+            베스트순
+          </Button>
+        </div>
+        <Button className={styles.createButton} onClick={() => setIsCreateReviewOpen(true)}>추가하기</Button>
+        <Modal
+          isOpen={isCreateReviewOpen}
+          onClose={() => setIsCreateReviewOpen(false)}
         >
-          최신순
-        </Button>
-        <Button
-          variant={order === "rating" ? "primary" : "ghost"}
-          onClick={handleBestClick}
-        >
-          베스트순
-        </Button>
-        <Button onClick={() => setIsCreateReviewOpen(true)}>추가하기</Button>
-        <Modal isOpen={isCreateReviewOpen} onClose={handleModalClose}>
-          <h2>리뷰 생성</h2>
-          <ReviewForm handleCreate={handleCreate} />
+          <h2 className={styles.modalTitle}>리뷰 생성</h2>
+          <ReviewForm onSubmit={handleCreate} />
         </Modal>
       </div>
       <ReviewList
         items={sortedItems}
-        onDelete={handleDelete}
         onUpdate={handleUpdate}
+        onDelete={handleDelete}
       />
-    </div>
+    </Layout>
   );
 }
 

@@ -1,15 +1,16 @@
-import ReviewListItem from "./ReviewListItem";
+import ReviewListItem from './ReviewListItem';
+import styles from './ReviewList.module.css';
 
-const ReviewList = ({items, onUpdate, onDelete}) => {
+function ReviewList({ items, onUpdate, onDelete }) {
   return (
-    <ul>
+    <ul className={styles.reviewList}>
       {items.map((item) => (
         <li key={item.id}>
-          <ReviewListItem item={item} onDelete={onDelete} onUpdate={onUpdate} />
+          <ReviewListItem item={item} onUpdate={onUpdate} onDelete={onDelete} />
         </li>
       ))}
     </ul>
   );
-};
+}
 
 export default ReviewList;

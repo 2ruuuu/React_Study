@@ -1,41 +1,24 @@
-import FoodList from "./components/FoodList";
-import Modal from "./components/Modal";
-import mockItems from "./mock.json";
-import styles from "./App.module.css";
-import {useState} from "react";
-import CreateFoodForm from "./components/CreateFoodForm";
+import { useState } from 'react';
+import Layout from './components/Layout';
+import FoodList from './components/FoodList';
+import Modal from './components/Modal';
+import mockItems from './mock.json';
+import FoodForm from './components/FoodForm';
+import Button from './components/Button';
+import Input from './components/Input';
+import styles from './App.module.css';
 
 function App() {
   const [items, setItems] = useState(mockItems);
-  const [order, setOrder] = useState("createdAt");
-  const [keyword, setKeyword] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const resultItems = items
-    .sort((a, b) => b[order] - a[order])
-    .filter(
-      (item) => item.title.includes(keyword) || item.title.includes(keyword),
-    );
+  const [order, setOrder] = useState('createdAt');
+  const [keyword, setKeyword] = useState('');
+  const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
 
-  const handleRecentClick = () => {
-    setOrder("createdAt");
-  };
+  const handleLatestClick = () => setOrder('createdAt');
 
-  const handleCalorieClick = () => {
-    setOrder("calorie");
-  };
+  const handleCalorieClick = () => setOrder('calorie');
 
-  const handleKeywordChange = (e) => {
-    setKeyword(e.target.value);
-  };
-
-  const handleDelete = (id) => {
-    const nextItems = items.filter((item) => item.id !== id);
-    setItems(nextItems);
-  };
-
-  const handleModalOpen = () => {
-    setIsModalOpen(true);
-  };
+  const handleKeywordChange = (e) => setKeyword(e.target.value);
 
   const handleCreate = (data) => {
     const now = new Date();
@@ -46,50 +29,80 @@ function App() {
       updatedAt: now.valueOf(),
     };
     setItems([newItem, ...items]);
-    setIsModalOpen(false);
+    setIsCreateModalOpen(false);
   };
 
   const handleUpdate = (id, data) => {
-    const index = items.findIndex((item) => item.id === id);
-    if (index < 0) return;
+    const targetIndex = items.findIndex((item) => item.id === id);
+    if (targetIndex < 0) return;
 
     const now = new Date();
     const nextItem = {
-      ...items[index],
+      ...items[targetIndex],
       ...data,
-      updatedAt: now.valueOf,
+      updatedAt: now.valueOf(),
     };
     const nextItems = [
-      ...items.slice(0, index),
+      ...items.slice(0, targetIndex),
       nextItem,
-      ...items.slice(index + 1),
+      ...items.slice(targetIndex + 1),
     ];
+
     setItems(nextItems);
   };
 
+  const handleDelete = (id) => {
+    const nextItems = items.filter((item) => item.id !== id);
+    setItems(nextItems);
+  };
+
+  const resultItems = items
+    .sort((a, b) => b[order] - a[order])
+    .filter(
+      (item) => item.title.includes(keyword) || item.content.includes(keyword)
+    );
+
   return (
-    <div>
-      <input
-        className={styles.input}
-        value={keyword}
-        onChange={handleKeywordChange}
-      />
-      <div>{keyword}</div>
-      <div>
-        <button onClick={handleRecentClick}>최신순</button>
-        <button onClick={handleCalorieClick}>칼로리순</button>
-        <button onClick={handleModalOpen}>추가하기</button>
+    <Layout>
+      <div className={styles.header}>
+        <Input
+          variant="search"
+          onChange={handleKeywordChange}
+          placeholder="검색어를 입력해주세요"
+        />
+        <div className={styles.buttonContainer}>
+          <button
+            className={`${styles.filter} ${
+              order === 'createdAt' ? styles.active : ''
+            }`}
+            onClick={handleLatestClick}
+          >
+            최신순
+          </button>
+          <button
+            className={`${styles.filter} ${
+              order === 'calorie' ? styles.active : ''
+            }`}
+            onClick={handleCalorieClick}
+          >
+            칼로리순
+          </button>
+          <Button onClick={() => setIsCreateModalOpen(true)}>추가하기</Button>
+          <Modal
+            title="칼로리 기록하기"
+            isOpen={isCreateModalOpen}
+            onClose={() => setIsCreateModalOpen(false)}
+          >
+            <FoodForm onSubmit={handleCreate} />
+          </Modal>
+        </div>
       </div>
       <FoodList
         items={resultItems}
-        onDelete={handleDelete}
         onUpdate={handleUpdate}
+        onDelete={handleDelete}
       />
-      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-        <h2>정보 입력</h2>
-        <CreateFoodForm onSubmit={handleCreate} />
-      </Modal>
-    </div>
+    </Layout>
   );
 }
 
