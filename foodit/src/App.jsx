@@ -38,8 +38,33 @@ function App() {
   };
 
   const handleCreate = (data) => {
-    console.log(data);
+    const now = new Date();
+    const newItem = {
+      id: items.length + 1,
+      ...data,
+      createdAt: now.valueOf(),
+      updatedAt: now.valueOf(),
+    };
+    setItems([newItem, ...items]);
     setIsModalOpen(false);
+  };
+
+  const handleUpdate = (id, data) => {
+    const index = items.findIndex((item) => item.id === id);
+    if (index < 0) return;
+
+    const now = new Date();
+    const nextItem = {
+      ...items[index],
+      ...data,
+      updatedAt: now.valueOf,
+    };
+    const nextItems = [
+      ...items.slice(0, index),
+      nextItem,
+      ...items.slice(index + 1),
+    ];
+    setItems(nextItems);
   };
 
   return (
@@ -55,7 +80,11 @@ function App() {
         <button onClick={handleCalorieClick}>칼로리순</button>
         <button onClick={handleModalOpen}>추가하기</button>
       </div>
-      <FoodList items={resultItems} onDelete={handleDelete} />
+      <FoodList
+        items={resultItems}
+        onDelete={handleDelete}
+        onUpdate={handleUpdate}
+      />
       <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
         <h2>정보 입력</h2>
         <CreateFoodForm onSubmit={handleCreate} />
