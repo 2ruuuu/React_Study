@@ -21,11 +21,6 @@
   padding: 18px 0;
 }
 
-.select {
-  border-radius: 5px;
-  height: 20px;
-}
-
 .main {
   flex-grow: 1;
   padding: 46px 0;

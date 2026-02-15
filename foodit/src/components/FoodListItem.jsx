@@ -1,13 +1,15 @@
-import { useState } from 'react';
-import Modal from './Modal';
-import FoodForm from './FoodForm';
-import Button from './Button';
-import placeholderImage from '../assets/placeholder.png';
-import styles from './FoodListItem.module.css';
+import {useState} from "react";
+import Modal from "./Modal";
+import FoodForm from "./FoodForm";
+import Button from "./Button";
+import placeholderImage from "../assets/placeholder.png";
+import styles from "./FoodListItem.module.css";
+import useTranslate from "../hooks/useTranslate";
 
-function FoodListItem({ item, onUpdate, onDelete }) {
-  const { imgUrl, title, calorie, content } = item;
+function FoodListItem({item, onUpdate, onDelete}) {
+  const {imgUrl, title, calorie, content} = item;
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+  const t = useTranslate();
 
   const handleEditFormSubmit = (data) => {
     onUpdate(item.id, data);
@@ -16,7 +18,11 @@ function FoodListItem({ item, onUpdate, onDelete }) {
 
   return (
     <div className={styles.foodListItem}>
-      <img className={styles.image} src={imgUrl ?? placeholderImage} alt={title} />
+      <img
+        className={styles.image}
+        src={imgUrl ?? placeholderImage}
+        alt={title}
+      />
       <div className={styles.container}>
         <div className={styles.titleContainer}>
           <span className={styles.title}>{title}</span>
@@ -32,23 +38,20 @@ function FoodListItem({ item, onUpdate, onDelete }) {
               variant="outlinePrimary"
               onClick={() => setIsEditModalOpen(true)}
             >
-              수정
+              {t("edit button")}
             </Button>
             <Modal
               title="칼로리 수정하기"
               isOpen={isEditModalOpen}
               onClose={() => setIsEditModalOpen(false)}
             >
-              <FoodForm
-                initialValue={item}
-                onSubmit={handleEditFormSubmit}
-              />
+              <FoodForm initialValue={item} onSubmit={handleEditFormSubmit} />
             </Modal>
             <Button
               variant="outlineSecondary"
               onClick={() => onDelete(item.id)}
             >
-              삭제
+              {t("delete button")}
             </Button>
           </div>
         </div>

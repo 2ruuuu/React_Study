@@ -1,26 +1,23 @@
-import { useEffect, useRef } from 'react';
-import Button from './Button';
-import Input from './Input';
-import Textarea from './Textarea';
-import Select from './Select';
-import placeholderImage from '../assets/placeholder.png';
-import styles from './ReviewForm.module.css';
+import {useEffect, useRef} from "react";
+import Button from "./Button";
+import Input from "./Input";
+import Textarea from "./Textarea";
+import Select from "./Select";
+import useTranslate from "../hooks/useTranslate";
+import placeholderImage from "../assets/placeholder.png";
+import styles from "./ReviewForm.module.css";
 
 function ReviewForm({
   review = {
-    title: '',
-    imgUrl: '',
+    title: "",
+    imgUrl: "",
     rating: 1,
-    content: '',
+    content: "",
   },
   onSubmit,
 }) {
   const inputRef = useRef(null);
-
-  const submit = (formData) => {
-    const data = Object.fromEntries(formData.entries());
-    onSubmit(data);
-  };
+  const t = useTranslate();
 
   useEffect(() => {
     if (inputRef.current) {
@@ -29,20 +26,20 @@ function ReviewForm({
   }, []);
 
   return (
-    <form className={styles.form} action={submit}>
+    <form className={styles.form} action={onSubmit}>
       <img src={placeholderImage} />
       <div className={styles.content}>
         <div className={styles.titleRating}>
           <Input
             name="title"
             defaultValue={review.title}
-            placeholder="제목을 입력해 주세요."
+            placeholder={t("review title placeholder")}
             ref={inputRef}
           />
           <Select
             name="rating"
             defaultValue={review.rating}
-            placeholder="별점을 입력해 주세요."
+            placeholder={t("review rating placeholder")}
           >
             <option value={1}>★</option>
             <option value={2}>★★</option>
@@ -55,9 +52,9 @@ function ReviewForm({
           className={styles.textarea}
           name="content"
           defaultValue={review.content}
-          placeholder="내용을 입력해 주세요."
+          placeholder={t("review content placeholder")}
         />
-        <Button className={styles.button}>작성완료</Button>
+        <Button className={styles.button}>{t("submit button")}</Button>
       </div>
     </form>
   );

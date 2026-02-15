@@ -1,8 +1,9 @@
-import logo from '../assets/logo.svg';
-import textLogo from '../assets/text-logo.svg';
-import styles from './Layout.module.css';
+import logo from "../assets/logo.svg";
+import textLogo from "../assets/text-logo.svg";
+import styles from "./Layout.module.css";
+import LocaleSelect from "./LocaleSelect";
 
-function Layout({ children }) {
+function Layout({children}) {
   return (
     <div className={styles.layout}>
       <div className={styles.gnb}>
@@ -15,6 +16,7 @@ function Layout({ children }) {
         <div className={styles.footerContent}>
           <img className={styles.textLogo} src={textLogo} alt="Foodit" />
           <span>서비스 이용약관 | 개인정보 처리방침</span>
+          <LocaleSelect />
         </div>
       </div>
     </div>

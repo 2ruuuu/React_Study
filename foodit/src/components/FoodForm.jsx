@@ -1,24 +1,19 @@
-import { useEffect, useRef } from 'react';
-import Button from './Button';
-import Input from './Input';
-import Textarea from './Textarea';
-import placeholderImage from '../assets/placeholder.png';
-import styles from './FoodForm.module.css';
+import {useEffect, useRef} from "react";
+import Button from "./Button";
+import Input from "./Input";
+import Textarea from "./Textarea";
+import placeholderImage from "../assets/placeholder.png";
+import styles from "./FoodForm.module.css";
 
-function FoodForm({ initialValue = {
-  title: '',
-  calorie: '',
-  content: '',
-}, onSubmit }) {
+function FoodForm({
+  initialValue = {
+    title: "",
+    calorie: "",
+    content: "",
+  },
+  onSubmit,
+}) {
   const inputRef = useRef(null);
-
-  const submit = (formData) => {
-    const title = formData.get('title');
-    const calorie = formData.get('calorie');
-    const content = formData.get('content');
-    const data = { title, calorie, content };
-    onSubmit(data);
-  };
 
   useEffect(() => {
     if (inputRef.current) {
@@ -27,7 +22,7 @@ function FoodForm({ initialValue = {
   }, []);
 
   return (
-    <form className={styles.form} action={submit}>
+    <form className={styles.form} action={onSubmit}>
       <div className={styles.container}>
         <img className={styles.image} src={placeholderImage} alt="image" />
         <div className={styles.inputContainer}>

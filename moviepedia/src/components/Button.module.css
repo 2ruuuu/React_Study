@@ -1,5 +1,6 @@
 .button {
   border: none;
+  cursor: pointer;
 }
 
 .primary {
@@ -19,7 +20,7 @@
 
 .danger {
   background-color: transparent;
-  color: #FF0023;
+  color: #ff0023;
   font-size: 16px;
   font-weight: 600;
 }

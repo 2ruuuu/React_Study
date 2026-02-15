@@ -1,28 +1,51 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import ReviewList from "./components/ReviewList";
 import Modal from "./components/Modal";
 import ReviewForm from "./components/ReviewForm";
 import Button from "./components/Button";
 import Layout from "./components/Layout";
-import mockItems from "./mock.json";
 import styles from "./App.module.css";
-import LocaleContext from "./contexts/LocaleContext";
+import useTranslate from "./hooks/useTranslate";
+import axios from "./utils/axios";
+
+const LIMIT = 10;
 
 function App() {
-  const [items, setItems] = useState(mockItems);
+  const [items, setItems] = useState([]);
   const [order, setOrder] = useState("createdAt");
   const [isCreateReviewOpen, setIsCreateReviewOpen] = useState(false);
-  const sortedItems = items.sort((a, b) => b[order] - a[order]);
+  const [hasNext, setHasNext] = useState(false);
+  const t = useTranslate();
 
-  const handleCreate = (data) => {
-    const now = new Date();
-    const newItem = {
-      id: items.length + 1,
-      ...data,
-      createdAt: now.valueOf(),
-      updatedAt: now.valueOf(),
-    };
-    setItems([newItem, ...items]);
+  const handleLoad = async (orderParam) => {
+    const response = await axios.get("/film-reviews", {
+      params: {
+        order: orderParam,
+        limit: LIMIT,
+      },
+    });
+    const {reviews, paging} = response.data;
+    setItems(reviews);
+    setHasNext(paging.hasNext);
+  };
+
+  const handleLoadMore = async () => {
+    const response = await axios.get("/film-reviews", {
+      params: {
+        order,
+        offset: items.length,
+        limit: LIMIT,
+      },
+    });
+    const {reviews, paging} = response.data;
+    setItems((prevItem) => [...prevItem, ...reviews]);
+    setHasNext(paging.hasNext);
+  };
+
+  const handleCreate = async (data) => {
+    const response = await axios.post("/film-reviews", data);
+    const {review} = response.data;
+    setItems((prev) => [review, ...prev]);
     setIsCreateReviewOpen(false);
   };
 
@@ -47,47 +70,50 @@ function App() {
     setItems(nextItems);
   };
 
+  useEffect(() => {
+    handleLoad(order);
+  }, [order]);
+
   return (
-    <LocaleContext.Provider value="ko">
-      <Layout>
-        <div className={styles.buttons}>
-          <div>
-            <Button
-              className={styles.orderButton}
-              variant={order === "createdAt" ? "primary" : "ghost"}
-              onClick={() => setOrder("createdAt")}
-            >
-              최신순
-            </Button>
-            <Button
-              className={styles.orderButton}
-              variant={order === "rating" ? "primary" : "ghost"}
-              onClick={() => setOrder("rating")}
-            >
-              베스트순
-            </Button>
-          </div>
+    <Layout>
+      <div className={styles.buttons}>
+        <div>
           <Button
-            className={styles.createButton}
-            onClick={() => setIsCreateReviewOpen(true)}
+            className={styles.orderButton}
+            variant={order === "createdAt" ? "primary" : "ghost"}
+            onClick={() => setOrder("createdAt")}
           >
-            추가하기
+            {t("sort by latest")}
           </Button>
-          <Modal
-            isOpen={isCreateReviewOpen}
-            onClose={() => setIsCreateReviewOpen(false)}
+          <Button
+            className={styles.orderButton}
+            variant={order === "rating" ? "primary" : "ghost"}
+            onClick={() => setOrder("rating")}
           >
-            <h2 className={styles.modalTitle}>리뷰 생성</h2>
-            <ReviewForm onSubmit={handleCreate} />
-          </Modal>
+            {t("sort by best")}
+          </Button>
         </div>
-        <ReviewList
-          items={sortedItems}
-          onUpdate={handleUpdate}
-          onDelete={handleDelete}
-        />
-      </Layout>
-    </LocaleContext.Provider>
+        <Button
+          className={styles.createButton}
+          onClick={() => setIsCreateReviewOpen(true)}
+        >
+          {t("create button")}
+        </Button>
+        <Modal
+          isOpen={isCreateReviewOpen}
+          onClose={() => setIsCreateReviewOpen(false)}
+        >
+          <h2 className={styles.modalTitle}>{t("create review title")}</h2>
+          <ReviewForm onSubmit={handleCreate} />
+        </Modal>
+      </div>
+      <ReviewList
+        items={items}
+        onUpdate={handleUpdate}
+        onDelete={handleDelete}
+      />
+      {hasNext && <Button onClick={handleLoadMore}>더 불러오기</Button>}
+    </Layout>
   );
 }
 
