@@ -58,23 +58,20 @@ function App() {
     setIsCreateModalOpen(false);
   };
 
-  const handleUpdate = (id, data) => {
-    const targetIndex = items.findIndex((item) => item.id === id);
-    if (targetIndex < 0) return;
+  const handleUpdate = async (id, data) => {
+    const response = await axios.patch(`/foods/${id}`, data);
+    const {food} = response.data;
 
-    const now = new Date();
-    const nextItem = {
-      ...items[targetIndex],
-      ...data,
-      updatedAt: now.valueOf(),
-    };
-    const nextItems = [
-      ...items.slice(0, targetIndex),
-      nextItem,
-      ...items.slice(targetIndex + 1),
-    ];
+    setItems((prev) => {
+      const targetIndex = prev.findIndex((item) => item.id === id);
+      if (targetIndex < 0) return;
 
-    setItems(nextItems);
+      return [
+        ...prev.slice(0, targetIndex),
+        food,
+        ...prev.slice(targetIndex + 1),
+      ];
+    });
   };
 
   const handleDelete = (id) => {
