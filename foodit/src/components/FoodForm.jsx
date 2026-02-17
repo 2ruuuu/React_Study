@@ -2,8 +2,8 @@ import {useEffect, useRef} from "react";
 import Button from "./Button";
 import Input from "./Input";
 import Textarea from "./Textarea";
-import placeholderImage from "../assets/placeholder.png";
 import styles from "./FoodForm.module.css";
+import FileInput from "./FileInput";
 
 function FoodForm({
   initialValue = {
@@ -24,7 +24,7 @@ function FoodForm({
   return (
     <form className={styles.form} action={onSubmit}>
       <div className={styles.container}>
-        <img className={styles.image} src={placeholderImage} alt="image" />
+        <FileInput name="imgFile" initialPreview={initialValue.imgUrl} />
         <div className={styles.inputContainer}>
           <div className={styles.titleContainer}>
             <Input

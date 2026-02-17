@@ -17,6 +17,8 @@ function App() {
   const [keyword, setKeyword] = useState("");
   const [isCreateModalOpen, setIsCreateModalOpen] = useState(false);
   const [cursor, setCursor] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
   const handleLoad = async (orderParam, searchParam) => {
     const response = await axios.get("/foods", {
@@ -32,15 +34,28 @@ function App() {
   };
 
   const handleLoadMore = async () => {
-    const response = await axios.get("/foods", {
-      params: {
-        order,
-        search: keyword,
-        limit: LIMIT,
-        cursor,
-      },
-    });
-    const {foods, paging} = response.data;
+    let data = null;
+    setIsLoading(true);
+    setError(null);
+    try {
+      const response = await axios.get("/foodss", {
+        params: {
+          order,
+          search: keyword,
+          limit: LIMIT,
+          cursor,
+        },
+      });
+      data = response.data;
+    } catch (error) {
+      setError(error);
+    } finally {
+      setIsLoading(false);
+    }
+
+    if (!data) return;
+
+    const {foods, paging} = data;
     setItems((prev) => [...prev, ...foods]);
     setCursor(paging.nextCursor);
   };
@@ -74,9 +89,9 @@ function App() {
     });
   };
 
-  const handleDelete = (id) => {
-    const nextItems = items.filter((item) => item.id !== id);
-    setItems(nextItems);
+  const handleDelete = async (id) => {
+    await axios.delete(`/foods/${id}`);
+    setItems((prev) => prev.filter((item) => item.id !== id));
   };
 
   useEffect(() => {
@@ -124,7 +139,12 @@ function App() {
           onUpdate={handleUpdate}
           onDelete={handleDelete}
         />
-        {cursor && <Button onClick={handleLoadMore}>더 불러오기</Button>}
+        {cursor && (
+          <Button disabled={isLoading} onClick={handleLoadMore}>
+            더 불러오기
+          </Button>
+        )}
+        {error && <div>오류가 발생했습니다</div>}
       </Layout>
     </LocaleProvider>
   );
