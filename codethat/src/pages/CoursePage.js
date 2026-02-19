@@ -1,14 +1,21 @@
-import { addWishlist, getCourseBySlug } from '../api';
-import Button from '../components/Button';
-import Container from '../components/Container';
-import Card from '../components/Card';
-import CourseIcon from '../components/CourseIcon';
-import getCourseColor from '../utils/getCourseColor';
-import styles from './CoursePage.module.css';
+import {useParams, Navigate, useNavigate} from "react-router-dom";
+import {addWishlist, getCourseBySlug} from "../api";
+import Button from "../components/Button";
+import Container from "../components/Container";
+import Card from "../components/Card";
+import CourseIcon from "../components/CourseIcon";
+import getCourseColor from "../utils/getCourseColor";
+import styles from "./CoursePage.module.css";
 
 function CoursePage() {
-  const course = getCourseBySlug('react-frontend-development');
+  const {courseSlug} = useParams();
+  const navigate = useNavigate();
+  const course = getCourseBySlug(courseSlug);
   const courseColor = getCourseColor(course?.code);
+
+  if (!course) {
+    return <Navigate to="/courses" />;
+  }
 
   const headerStyle = {
     borderTopColor: courseColor,
@@ -16,6 +23,7 @@ function CoursePage() {
 
   const handleAddWishlistClick = () => {
     addWishlist(course?.slug);
+    navigate("/wishlist");
   };
 
   return (
@@ -31,7 +39,7 @@ function CoursePage() {
         </Container>
       </div>
       <Container className={styles.topics}>
-        {course.topics.map(({ topic }) => (
+        {course.topics.map(({topic}) => (
           <Card className={styles.topic} key={topic.slug}>
             <h3 className={styles.title}>{topic.title}</h3>
             <p className={styles.summary}>{topic.summary}</p>

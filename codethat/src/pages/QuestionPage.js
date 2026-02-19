@@ -1,15 +1,21 @@
-import classNames from 'classnames';
-import { getQuestionById } from '../api';
-import Avatar from '../components/Avatar';
-import Card from '../components/Card';
-import Container from '../components/Container';
-import DateText from '../components/DateText';
-import Lined from '../components/Lined';
-import Warn from '../components/Warn';
-import styles from './QuestionPage.module.css';
+import classNames from "classnames";
+import {getQuestionById} from "../api";
+import Avatar from "../components/Avatar";
+import Card from "../components/Card";
+import Container from "../components/Container";
+import DateText from "../components/DateText";
+import Lined from "../components/Lined";
+import Warn from "../components/Warn";
+import styles from "./QuestionPage.module.css";
+import {Navigate, useParams} from "react-router-dom";
 
 function QuestionPage() {
-  const question = getQuestionById('616825');
+  const {questionSlug} = useParams();
+  const question = getQuestionById(questionSlug);
+
+  if (!question) {
+    return <Navigate to="/questions" />;
+  }
 
   return (
     <>
@@ -34,7 +40,7 @@ function QuestionPage() {
             </div>
             <p
               className={styles.content}
-              dangerouslySetInnerHTML={{ __html: question.content }}
+              dangerouslySetInnerHTML={{__html: question.content}}
             />
           </div>
         </Container>
@@ -62,7 +68,7 @@ function QuestionPage() {
   );
 }
 
-function Writer({ className, writer }) {
+function Writer({className, writer}) {
   return (
     <div className={classNames(className, styles.writer)}>
       <div className={styles.info}>
@@ -74,10 +80,10 @@ function Writer({ className, writer }) {
   );
 }
 
-function Answer({ className, answer }) {
+function Answer({className, answer}) {
   return (
     <Card className={classNames(styles.answer, className)} key={answer.id}>
-      <p dangerouslySetInnerHTML={{ __html: answer.content }} />
+      <p dangerouslySetInnerHTML={{__html: answer.content}} />
       <div className={styles.answerInfo}>
         <div className={styles.date}>
           <DateText value={answer.createdAt} />
