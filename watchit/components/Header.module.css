@@ -1,0 +1,16 @@
+.inner {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10;
+  border-bottom: 1px solid #1f1f1f;
+}
+
+.container {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  padding: 32px 0;
+}
