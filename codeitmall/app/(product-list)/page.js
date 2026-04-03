@@ -1,10 +1,13 @@
+import {getProducts} from "../lib/data";
 import ProductList from "./components/ProductList";
 
-export default function Home() {
+const Home = async () => {
+  const {results: products} = await getProducts();
   return (
     <div>
-      <h1>홈페이지</h1>
-      <ProductList />
+      <ProductList products={products} />
     </div>
   );
-}
+};
+
+export default Home;
