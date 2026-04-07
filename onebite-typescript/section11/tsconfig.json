@@ -1,0 +1,11 @@
+{
+  "compilerOptions": {
+    "target": "ES5",
+    "module": "CommonJS",
+    "strict": true,
+    "allowJs": true,
+    "esModuleInterop": true, //보통 키고 시작함
+    "jsx": "react-jsx"
+  },
+  "include": ["src"]
+}
