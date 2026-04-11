@@ -1,12 +1,45 @@
 import SearchBarLayout from "@/components/SearchBarLayout";
 import style from "./index.module.css";
 import {ReactNode} from "react";
+import BookItem from "@/components/BookItem";
+import {InferGetServerSidePropsType} from "next";
+import fetchBooks from "@/lib/fetchBooks";
+import fetchRandomBooks from "@/lib/fetchRandomBooks";
 
-const Home = () => {
+export const getServerSideProps = async () => {
+  //페이지 컴포넌트보다 먼저 실행되어서, 컴포넌트에 필요한 데이터를 불러오는 함수
+  const [allBooks, randomBooks] = await Promise.all([
+    fetchBooks(),
+    fetchRandomBooks(),
+  ]);
+
+  return {
+    props: {
+      allBooks,
+      randomBooks,
+    },
+  };
+};
+
+const Home = ({
+  allBooks,
+  randomBooks,
+}: InferGetServerSidePropsType<typeof getServerSideProps>) => {
   return (
-    <>
-      <h1 className={style.h1}>안녕 Next.js</h1>
-    </>
+    <div className={style.container}>
+      <section>
+        <h3>지금 추천하는 도서</h3>
+        {randomBooks.map((book) => (
+          <BookItem key={book.id} {...book} />
+        ))}
+      </section>
+      <section>
+        <h3>등록된 모든 도서</h3>
+        {allBooks.map((book) => (
+          <BookItem key={book.id} {...book} />
+        ))}
+      </section>
+    </div>
   );
 };
 
