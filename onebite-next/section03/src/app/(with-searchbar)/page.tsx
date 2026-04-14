@@ -1,6 +1,5 @@
 import BookItem from "@/components/book-item";
 import style from "./page.module.css";
-import books from "@/mock/books.json";
 import {BookData} from "@/types";
 
 async function AllBooks() {
@@ -24,6 +23,7 @@ async function AllBooks() {
 async function RecoBooks() {
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_API_SERVER_URL}/book/random`,
+    {cache: "force-cache"},
   );
   if (!response.ok) {
     return <div>오류가 발생했습니다...</div>;
