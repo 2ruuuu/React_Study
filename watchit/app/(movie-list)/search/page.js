@@ -1,8 +1,10 @@
-import styles from "./page.module.css";
+export default async function Search({ searchParams }) {
+  const { q } = await searchParams;
 
-const Search = async ({searchParams}) => {
-  const {q} = await searchParams;
-  return <div className={styles.title}>요요: {q}</div>;
-};
-
-export default Search;
+  return (
+    <div>
+      <h1>검색 페이지</h1>
+      <div>검색어: {q}</div>
+    </div>
+  );
+}

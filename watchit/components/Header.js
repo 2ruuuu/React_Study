@@ -1,22 +1,31 @@
-import Link from "next/link";
-import Image from "next/image";
-import logoImg from "@/assets/logo.svg";
-import settingImg from "@/assets/setting.svg";
-import styles from "./Header.module.css";
+import Link from 'next/link';
+import logo from '@/assets/logo.svg';
+import settingWhite from '@/assets/setting-white.svg';
+import styles from './Header.module.css';
 
-const Header = () => {
+export default function Header() {
   return (
-    <div className={styles.inner}>
+    <header className={styles.header}>
       <div className={styles.container}>
         <Link href="/">
-          <Image src={logoImg} alt="로고" />
+          <img
+            src={logo.src}
+            alt="Watchit"
+            width={151}
+            height={28}
+            className={styles.logoImage}
+          />
         </Link>
         <Link href="/settings">
-          <Image src={settingImg} alt="설정" />
+          <img
+            src={settingWhite.src}
+            alt="Settings"
+            width={20}
+            height={20}
+            className={styles.settingImage}
+          />
         </Link>
       </div>
-    </div>
+    </header>
   );
-};
-
-export default Header;
+}

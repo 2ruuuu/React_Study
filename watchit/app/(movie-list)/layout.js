@@ -1,10 +1,11 @@
-import SearchForm from "./components/SearchForm";
+import SearchForm from './components/SearchForm';
+import styles from './layout.module.css';
 
-export default function MovieListLayout({children}) {
+export default function MovieListLayout({ children }) {
   return (
     <div>
       <SearchForm />
-      <div>{children}</div>
+      <div className={styles.container}>{children}</div>
     </div>
   );
 }

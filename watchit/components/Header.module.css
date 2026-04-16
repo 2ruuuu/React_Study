@@ -1,16 +1,22 @@
-.inner {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  z-index: 10;
+.header {
+  padding: 26px 0;
   border-bottom: 1px solid #1f1f1f;
 }
 
 .container {
-  max-width: 1200px;
+  max-width: 950px;
   margin: 0 auto;
   display: flex;
+  align-items: center;
   justify-content: space-between;
-  padding: 32px 0;
+}
+
+.logoImage {
+  width: 151px;
+  height: 28px;
+}
+
+.settingImage {
+  width: 20px;
+  height: 20px;
 }

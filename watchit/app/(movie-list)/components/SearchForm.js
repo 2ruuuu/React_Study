@@ -1,19 +1,17 @@
-import styles from "./SearchForm.module.css";
+import styles from './SearchForm.module.css';
 
-const SearchForm = () => {
+export default function SearchForm() {
   return (
-    <form action="/search" className={styles.container}>
+    <form action="/search">
       <input
         name="q"
-        className={styles.searchInput}
-        placeholder="영화를 검색해보세요."
         type="text"
+        placeholder="영화를 검색해보세요."
+        className={styles.input}
       />
-      <button className={styles.searchButton} type="submit">
+      <button type="submit" className={styles.button}>
         검색
       </button>
     </form>
   );
-};
-
-export default SearchForm;
+}

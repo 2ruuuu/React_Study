@@ -1,12 +1,13 @@
-import Header from "@/components/Header";
-import "./globals.css";
+import Header from '@/components/Header';
+import styles from './layout.module.css';
+import './globals.css';
 
-export default function RootLayout({children}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="ko">
       <body>
         <Header />
-        <div>{children}</div>
+        <div className={styles.container}>{children}</div>
       </body>
     </html>
   );
