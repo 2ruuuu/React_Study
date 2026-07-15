@@ -1,19 +1,11 @@
 import ProductInfo from "./components/ProductInfo";
-import {get} from "@/app/lib/fetch";
-import SizeReviewList from "./components/SizeReviewList";
-import {getProduct, getSizeReviews} from "@/app/lib/data";
+import Button from "@/components/Button";
 
-const Product = async ({params}) => {
-  const {id} = await params;
-  const [product, {results: sizeReviews}] = await Promise.all([
-    getProduct(id),
-    getSizeReviews(id),
-  ]);
-
+const Product = () => {
   return (
     <div>
-      <ProductInfo product={product} />
-      {sizeReviews?.length > 0 && <SizeReviewList sizeReviews={sizeReviews} />}
+      <ProductInfo />
+      <Button>구매하기</Button>
     </div>
   );
 };
