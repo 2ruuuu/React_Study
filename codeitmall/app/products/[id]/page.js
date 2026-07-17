@@ -1,11 +1,18 @@
 import ProductInfo from "./components/ProductInfo";
-import Button from "@/components/Button";
+import SizeReviewList from "./components/SizeReviewList";
+import {getProduct, getSizeReviews} from "@/lib/data";
 
-const Product = () => {
+const Product = async ({params}) => {
+  const {id} = await params;
+  const [product, {results: sizeReviews}] = await Promise.all([
+    getProduct(id),
+    getSizeReviews(id),
+  ]);
+
   return (
     <div>
-      <ProductInfo />
-      <Button>구매하기</Button>
+      <ProductInfo product={product} />
+      {sizeReviews?.length > 0 && <SizeReviewList sizeReviews={sizeReviews} />}
     </div>
   );
 };
