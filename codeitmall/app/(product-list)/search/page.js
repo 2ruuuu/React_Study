@@ -1,14 +1,18 @@
 import {getInitialProducts} from "@/lib/data";
-import ProductList from "../components/ProductList";
+import LoadMoreProductList from "../components/LoadMoreProductList";
 
 const Search = async ({searchParams}) => {
   const {q} = await searchParams;
-  const {results: products} = await getInitialProducts(q);
+  const {results: products, next} = await getInitialProducts(q);
 
   return (
     <div>
       <div>검색어: {q}</div>
-      <ProductList products={products} />
+      <LoadMoreProductList
+        key={q || "all"}
+        initialProducts={products}
+        initialNext={next}
+      />
     </div>
   );
 };

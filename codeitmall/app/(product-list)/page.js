@@ -1,4 +1,4 @@
-import ProductList from "./components/ProductList";
+import LoadMoreProductList from "./components/LoadMoreProductList";
 import {getInitialProducts} from "@/lib/data";
 
 const Home = async () => {
@@ -6,7 +6,7 @@ const Home = async () => {
 
   return (
     <div>
-      <ProductList products={products} />
+      <LoadMoreProductList initialProducts={products} initialNext={next} />
     </div>
   );
 };

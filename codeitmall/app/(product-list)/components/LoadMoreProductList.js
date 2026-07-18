@@ -2,12 +2,16 @@
 
 import {useState} from "react";
 import ProductList from "./ProductList";
+import {get} from "@/lib/fetch";
 
 const LoadMoreProductList = ({initialProducts = [], initialNext = null}) => {
-  const [product, setProduct] = useState(initialProducts);
+  const [products, setProducts] = useState(initialProducts);
   const [next, setNext] = useState(initialNext);
 
-  const handleLoadMoer = () => {};
+  const handleLoadMore = async () => {
+    const res = await get(next);
+    console.log(res);
+  };
 
   return (
     <div>
