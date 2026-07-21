@@ -7,10 +7,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <link
-        rel="stylesheet"
-        href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css"
-      />
+      <head>
+        <link
+          rel="stylesheet"
+          href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css"
+        />
+      </head>
       <body>{children}</body>
     </html>
   );
