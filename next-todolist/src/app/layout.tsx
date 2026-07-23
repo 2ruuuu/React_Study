@@ -1,3 +1,4 @@
+import Gnb from "@/components/Gnb";
 import "./globals.css";
 
 export default function RootLayout({
@@ -13,7 +14,10 @@ export default function RootLayout({
           href="https://cdn.jsdelivr.net/gh/moonspam/NanumSquare@2.0/nanumsquare.css"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <Gnb />
+        {children}
+      </body>
     </html>
   );
 }

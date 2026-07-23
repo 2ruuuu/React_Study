@@ -17,7 +17,7 @@ type ButtonProps = ButtonHTMLAttributes<HTMLButtonElement> & {
   icon?: ReactNode;
 };
 
-const whiteBtn = "bg-slate-200 text-slate-900";
+const whiteBtn = "bg-slate-100 text-slate-900";
 const violetBtn = "bg-violet-600 text-white";
 const roseBtn = "bg-rose-500 text-white";
 const limeBtn = "bg-lime-300 text-slate-900";
@@ -35,14 +35,15 @@ const variantClass: Record<Variant, string> = {
 
 const SHADOW = "shadow-[2px_4px_0_0_#0f172a]";
 
+// 피그마 56 = 본체 52 + 그림자
 const sizeClassWithShadow: Record<Size, string> = {
-  md: "h-[52px] px-4 gap-2 rounded-full text-body font-bold",
-  icon: "size-[52px] rounded-full justify-center",
+  md: "h-[52px] shrink-0 gap-2 rounded-full border-2 border-slate-900 px-6 text-body font-bold",
+  icon: "size-[52px] shrink-0 justify-center rounded-full border-2 border-slate-900",
 };
 
 const sizeClassNoShadow: Record<Size, string> = {
-  md: "h-14 px-4 gap-2 rounded-full text-body font-bold",
-  icon: "size-14 rounded-full justify-center",
+  md: "h-14 shrink-0 gap-2 rounded-full border-2 border-slate-900 px-6 text-body font-bold",
+  icon: "size-14 shrink-0 justify-center rounded-full border-2 border-slate-900",
 };
 
 const Button = ({
