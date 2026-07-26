@@ -28,7 +28,11 @@ const CheckList = ({
         className,
       ].join(" ")}
     >
-      <button type="button" onClick={onToggle} className="shrink-0">
+      <button
+        type="button"
+        onClick={onToggle}
+        className="shrink-0 cursor-pointer"
+      >
         <Image
           src={checked ? checkBoxFilled : checkBoxEmpty}
           alt=""

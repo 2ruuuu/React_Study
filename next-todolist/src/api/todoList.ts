@@ -2,7 +2,10 @@ import api from "@/lib/axios";
 import {TodoItem} from "./type";
 
 // 항목 등록
-export const postItems = async () => {};
+export const postItems = async (name: string) => {
+  const {data} = await api.post<TodoItem>("/items", {name});
+  return data;
+};
 
 // 항목 목록 조회
 export const getItems = async (page = 1, pageSize = 10) => {

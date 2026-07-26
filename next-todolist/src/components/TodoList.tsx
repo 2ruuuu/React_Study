@@ -3,8 +3,8 @@ import todo from "@/assets/images/img-todoButton.png";
 import done from "@/assets/images/img-doneButton.png";
 import todoEmpty from "@/assets/images/img-todoEmpty-small.png";
 import doneEmpty from "@/assets/images/img-doneEmpty-small.png";
-import CheckList from "@/components/CheckList";
 import {getItems} from "@/api/todoList";
+import TodoCheckItem from "./TodoCheckItem";
 
 const TodoList = async () => {
   const items = await getItems();
@@ -32,7 +32,12 @@ const TodoList = async () => {
         ) : (
           <div className="flex flex-col gap-4">
             {[...todos].reverse().map((item) => (
-              <CheckList key={item.id}>{item.name}</CheckList>
+              <TodoCheckItem
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                isCompleted={item.isCompleted}
+              />
             ))}
           </div>
         )}
@@ -58,9 +63,12 @@ const TodoList = async () => {
         ) : (
           <div className="flex flex-col gap-4">
             {[...dones].reverse().map((item) => (
-              <CheckList key={item.id} checked>
-                {item.name}
-              </CheckList>
+              <TodoCheckItem
+                key={item.id}
+                id={item.id}
+                name={item.name}
+                isCompleted={item.isCompleted}
+              />
             ))}
           </div>
         )}
