@@ -16,7 +16,18 @@ export const getItems = async (page = 1, pageSize = 10) => {
 export const getItemsDetail = async () => {};
 
 // 항목 수정
-export const patchItemsDetail = async () => {};
+export const patchItemsDetail = async (
+  itemId: number,
+  body: {
+    name?: string;
+    memo?: string;
+    imageUrl?: string;
+    isCompleted?: boolean;
+  },
+) => {
+  const {data} = await api.patch(`/items/${itemId}`, body);
+  return data;
+};
 
 // 항목 삭제
 export const deleteItemsDetail = async () => {};
