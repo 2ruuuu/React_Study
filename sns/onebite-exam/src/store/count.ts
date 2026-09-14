@@ -20,9 +20,9 @@ export const useCountStore = create(
           });
         },
         decrease: () => {
-          set((state) => ({
-            count: state.count - 1,
-          }));
+          set((state) => {
+            state.count -= 1;
+          });
         },
       },
     })),
