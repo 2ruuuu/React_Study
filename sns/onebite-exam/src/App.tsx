@@ -2,7 +2,6 @@ import { Route, Routes } from "react-router";
 import "./App.css";
 import CounterPage from "./pages/counter-page";
 import TodoListPage from "./pages/todo-list-page";
-import TodoDetailPage from "./pages/todo-detail-page";
 
 function App() {
   return (
@@ -10,7 +9,6 @@ function App() {
       <Route path="/" element={<div>Home</div>} />
       <Route path="/counter" element={<CounterPage />} />
       <Route path="/todolist" element={<TodoListPage />} />
-      <Route path="/todolist/:id " element={<TodoDetailPage />} />
     </Routes>
   );
 }

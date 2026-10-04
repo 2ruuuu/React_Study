@@ -3,9 +3,7 @@ import { combine } from "zustand/middleware";
 import { immer } from "zustand/middleware/immer";
 import type { Todo } from "@/type";
 
-const initialState: {
-  todos: Todo[];
-} = {
+const initialState: { todos: Todo[] } = {
   todos: [],
 };
 
